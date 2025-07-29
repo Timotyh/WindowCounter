@@ -3,10 +3,18 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, query, orderBy } from 'firebase/firestore';
 
-// Firebase configuration (provided by the environment)
-const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+// Firebase configuration (prioritize Canvas globals, then environment variables for build)
+const firebaseConfig = typeof __firebase_config !== 'undefined'
+  ? JSON.parse(__firebase_config)
+  : JSON.parse(process.env.REACT_APP_FIREBASE_CONFIG || '{}');
+
+const appId = typeof __app_id !== 'undefined'
+  ? __app_id
+  : process.env.REACT_APP_APP_ID || 'default-app-id';
+
+const initialAuthToken = typeof __initial_auth_token !== 'undefined'
+  ? __initial_auth_token
+  : process.env.REACT_APP_INITIAL_AUTH_TOKEN || null;
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -43,7 +51,7 @@ const App = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingWindowId, setEditingWindowId] = useState(null);
   const [editingWindowName, setEditingWindowName] = useState('');
-  const [editingWindowPrice, setEditingWindowPrice] = useState('');
+  const [editingWindowPrice, setEditingWindowPrice] = useState(''); // Corrected variable name
 
   // State to control visibility of add window input fields
   const [showAddWindowInputs, setShowAddWindowInputs] = useState(false);
