@@ -1,14 +1,13 @@
-/* global __firebase_config, __app_id, __initial_auth_token */
 import React, { useState, useEffect } from 'react';
-// Corrected Firebase imports to use standard module paths
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, query, orderBy } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, query } from 'firebase/firestore';
 
-// Firebase configuration (prioritize Canvas globals, then environment variables for build)
-const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+// Firebase configuration: ONLY use process.env variables for Netlify deployment
+// Ensure these are set in Netlify Site Settings -> Build & deploy -> Environment
+const firebaseConfig = JSON.parse(process.env.REACT_APP_FIREBASE_CONFIG || '{}');
+const appId = process.env.REACT_APP_APP_ID || 'default-app-id';
+const initialAuthToken = process.env.REACT_APP_INITIAL_AUTH_TOKEN || null;
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -18,7 +17,6 @@ const auth = getAuth(app);
 // Main App component
 const App = () => {
   // State for Firebase and user
-  const [user, setUser] = useState(null);
   const [isAuthReady, setIsAuthReady] = useState(false);
   const [userId, setUserId] = useState(null);
 
@@ -66,7 +64,6 @@ const App = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
-        setUser(currentUser);
         setUserId(currentUser.uid);
         console.log("Firebase authenticated. User ID:", currentUser.uid);
       } else {
