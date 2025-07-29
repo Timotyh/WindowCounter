@@ -1,0 +1,21 @@
+{
+  "name": "Window Counter App",
+  "short_name": "Window Counter",
+  "description": "A simple app to count and price window types.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f0f4f8",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "https://placehold.co/192x192/3b82f6/ffffff?text=WC",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://placehold.co/512x512/3b82f6/ffffff?text=WC",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
